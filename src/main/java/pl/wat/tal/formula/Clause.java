@@ -3,6 +3,7 @@ package pl.wat.tal.formula;
 import lombok.Getter;
 import lombok.ToString;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @ToString
@@ -30,7 +31,11 @@ public class Clause {
         literals.remove(literal);
     }
 
-    public boolean equals(Clause clause) {
-        return clause.getLiterals().containsAll(literals) && literals.containsAll(clause.getLiterals());
+    public Clause getDeepCopy() {
+        List<String> newLiterals = new ArrayList<>();
+        for(String literal: literals) {
+            newLiterals.add(new String(literal));
+        }
+        return new Clause(newLiterals);
     }
 }

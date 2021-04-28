@@ -32,7 +32,7 @@ public class ConjunctiveNormalFormula {
     }
 
     public ConjunctiveNormalFormula copy() {
-        return new ConjunctiveNormalFormula(variableNumber, clauseNumber, new ArrayList<>(clauses));
+        return new ConjunctiveNormalFormula(variableNumber, clauseNumber, getClausesDeepCopy());
     }
 
     public boolean containsAnyEmptyClause() {
@@ -42,5 +42,13 @@ public class ConjunctiveNormalFormula {
             }
         }
         return false;
+    }
+
+    private List<Clause> getClausesDeepCopy() {
+        List<Clause> clausesDeepCopy = new ArrayList<>();
+        for(Clause clause : clauses) {
+            clausesDeepCopy.add(clause.getDeepCopy());
+        }
+        return clausesDeepCopy;
     }
 }
