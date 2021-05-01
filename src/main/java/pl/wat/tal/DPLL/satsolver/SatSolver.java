@@ -1,6 +1,6 @@
-package pl.wat.tal.satsolver;
+package pl.wat.tal.DPLL.satsolver;
 
-import pl.wat.tal.formula.ConjunctiveNormalFormula;
+import pl.wat.tal.DPLL.formula.ConjunctiveNormalFormula;
 
 import java.util.List;
 

@@ -1,7 +1,7 @@
-package pl.wat.tal.input.reader;
+package pl.wat.tal.DPLL.reader;
 
-import pl.wat.tal.formula.Clause;
-import pl.wat.tal.formula.ConjunctiveNormalFormula;
+import pl.wat.tal.DPLL.formula.Clause;
+import pl.wat.tal.DPLL.formula.ConjunctiveNormalFormula;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -20,7 +20,8 @@ public class DimacsStdInReader implements CNFReader {
         clauseLines = new ArrayList<>();
         try(BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in))) {
             String line;
-            while((line = bufferedReader.readLine()) != null) {
+
+            while((line = bufferedReader.readLine()) != null && !line.isEmpty()) {
                 parseDimacsLine(line);
             }
         } catch (IOException e) {

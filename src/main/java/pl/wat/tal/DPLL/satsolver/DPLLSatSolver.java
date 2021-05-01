@@ -1,7 +1,7 @@
-package pl.wat.tal.satsolver;
+package pl.wat.tal.DPLL.satsolver;
 
-import pl.wat.tal.formula.Clause;
-import pl.wat.tal.formula.ConjunctiveNormalFormula;
+import pl.wat.tal.DPLL.formula.Clause;
+import pl.wat.tal.DPLL.formula.ConjunctiveNormalFormula;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,11 +23,11 @@ public class DPLLSatSolver implements SatSolver {
 
     private boolean literalSolve(ConjunctiveNormalFormula cnf, boolean right) {
         ConjunctiveNormalFormula cnfCopy = cnf.copy();
-        System.out.println(cnfCopy.getClauses());
+//        System.out.println(cnfCopy.getClauses());
         List<String> deletedUnitLiterals = processUnitClauses(cnfCopy);
 
         if(cnfCopy.containsAnyEmptyClause()) {
-            System.out.println("Contains empty clause!");
+//            System.out.println("Contains empty clause!");
             return false;
         } else if(cnfCopy.isEmpty()) {
             System.out.println("No clauses left!");
@@ -37,9 +37,9 @@ public class DPLLSatSolver implements SatSolver {
             if(!right) {
                 chosenLiteral = negateLiteral(cnfCopy.getClauses().get(0).getLiterals().get(0));
             }
-            System.out.println("Chosen literal: " + chosenLiteral + ", deleting!");
+//            System.out.println("Chosen literal: " + chosenLiteral + ", deleting!");
             removeVariable(cnfCopy, chosenLiteral);
-            System.out.println(cnfCopy.getClauses());
+//            System.out.println(cnfCopy.getClauses());
             if(!literalSolve(cnfCopy, true) && !literalSolve(cnfCopy, false)) {
                 return false;
             } else {
@@ -52,15 +52,15 @@ public class DPLLSatSolver implements SatSolver {
 
     private List<String> processUnitClauses(ConjunctiveNormalFormula cnf) {
         List<String> unitClauseLiterals = new ArrayList<>();
-        System.out.println("Processing unit clauses: ");
+//        System.out.println("Processing unit clauses: ");
         List<Clause> clauses = cnf.getClauses();
         for(int i = 0; i < clauses.size(); i++) {
             Clause clause = clauses.get(i);
             if (clause.isUnitClause()) {
-                System.out.println("Unit literal: ");
+//                System.out.println("Unit literal: ");
                 String unitLiteral = clause.getLiterals().get(0);
-                System.out.println("Deleting: " + unitLiteral);
-                System.out.println(clauses);
+//                System.out.println("Deleting: " + unitLiteral);
+//                System.out.println(clauses);
                 unitClauseLiterals.add(unitLiteral);
 
                 removeVariable(cnf, unitLiteral);

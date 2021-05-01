@@ -1,4 +1,4 @@
-package pl.wat.tal.formula;
+package pl.wat.tal.DPLL.formula;
 
 import lombok.Getter;
 import lombok.ToString;
