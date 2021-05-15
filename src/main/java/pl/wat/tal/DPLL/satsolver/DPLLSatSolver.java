@@ -31,6 +31,7 @@ public class DPLLSatSolver implements SatSolver {
             return false;
         } else if(cnfCopy.isEmpty()) {
             System.out.println("No clauses left!");
+            trueLiterals.addAll(deletedUnitLiterals);
             return true;
         } else {
             String chosenLiteral = cnfCopy.getClauses().get(0).getLiterals().get(0);

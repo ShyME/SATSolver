@@ -17,10 +17,10 @@ public class Main {
         System.out.println(cnf.toString());
         SatSolver satSolver = new DPLLSatSolver();
         boolean sat = satSolver.solve(cnf);
-//        List<String> result = satSolver.getTrueLiterals();
-//        System.out.println(sat);
-//        System.out.println(result);
-//        System.out.println(checkSAT(cnf, result));
+        List<String> result = satSolver.getTrueLiterals();
+        System.out.println(sat);
+        System.out.println(result);
+        System.out.println(checkSAT(cnf, result));
 
 
         List<Long> times = new ArrayList<>();
