@@ -1,5 +1,7 @@
 package pl.wat.tal.GSAT.formula;
 
+import pl.wat.tal.DPLL.formula.Clause;
+
 import java.util.List;
 import java.util.Map;
 

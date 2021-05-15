@@ -1,7 +1,6 @@
 package pl.wat.tal.GSAT.alg;
 
-
-import pl.wat.tal.GSAT.formula.Clause;
+import pl.wat.tal.DPLL.formula.Clause;
 import pl.wat.tal.GSAT.formula.ConjunctiveNormalFormula;
 import pl.wat.tal.GSAT.formula.VariableData;
 
