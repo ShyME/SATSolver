@@ -3,19 +3,16 @@ package pl.wat.tal.GSAT.alg;
 import pl.wat.tal.DPLL.formula.Clause;
 import pl.wat.tal.GSAT.formula.ConjunctiveNormalFormula;
 import pl.wat.tal.GSAT.formula.VariableData;
+import pl.wat.tal.MemoryCounter;
 
 import java.util.*;
 
 public class Gsat {
 
 
-    private final Random random;
+    private final Random random = new Random();
     private String lastChangedVariable;
     private Map<String, VariableData> variablesValues;
-
-    public Gsat() {
-        this.random = new Random();
-    }
 
     public Map<String, VariableData> findSolution(ConjunctiveNormalFormula formula, long maxTries, long maxFlips, double wp){
 
@@ -29,58 +26,57 @@ public class Gsat {
                     System.out.println("Rozwiązanie znaleziono");
                     return variablesValues;
                 }
-
-                Strategy strategy = randStrategy(wp);
-                if (strategy == Strategy.STANDARD){
-                    lastChangedVariable = findVariableToNegate(variablesValues, formula);
-                }else {
-                    lastChangedVariable = findVariableToNegateRandomStep(variablesValues, formula);
-                }
+                lastChangedVariable = findVariableToNegate(variablesValues, formula, wp).replace("-", "");
                 variablesValues.get(lastChangedVariable).negate();
             }
-
         }
 
         System.out.println("Nie znaleziono satysfakcjonującego wartościowania");
         return null;
     }
 
-    private String findVariableToNegateRandomStep(Map<String, VariableData> variablesValues, ConjunctiveNormalFormula formula){
+    private String findVariableToNegate(Map<String, VariableData> variablesValues, ConjunctiveNormalFormula formula, double p){
+
+        List<Clause> allClauses = formula.getClauses();
         List<Integer> unSatClauses = getUnSatClauses(variablesValues, formula.getClauses().size());
-        List<Clause> clauses = formula.getClauses();
-        Clause randomlySelectedClause = clauses.get(unSatClauses.get(random.nextInt(unSatClauses.size())));
-        List<String> literals = randomlySelectedClause.getLiterals();
 
-        return literals.get(random.nextInt(literals.size())).replace("-", "");
-    }
+        int randomClause = unSatClauses.get(random.nextInt(unSatClauses.size()));
+        Clause clause = allClauses.get(randomClause);
 
-    private String findVariableToNegate(Map<String, VariableData> variablesValues, ConjunctiveNormalFormula formula){
+        int score = 0;
 
-        List<String> winList = new ArrayList<>();
-        int highestDiff = Integer.MIN_VALUE;
+        List<String> literalsWithScoreZero = new ArrayList<>();
+        List<String> literalsWithHigherScore = new ArrayList<>();
+        int minScore = Integer.MAX_VALUE, literalIdx = 0;
 
-        for (Map.Entry<String, VariableData> entry: variablesValues.entrySet()){
+        for (int i = 0; i < clause.getLiterals().size(); i++) {
+            String literal = clause.getLiterals().get(i);
+            score = formula.getNumberOfUnSatClausesAfterChange(variablesValues, literal.replace("-", ""));
 
-            String currentVariable = entry.getKey();
-            if(entry.getKey().equals(lastChangedVariable)){
-                continue;
+            if(score < minScore){
+                minScore = score;
+                literalIdx = i;
             }
 
-            int currentDiff = formula.getNumberOfSatClausesAfterChange(variablesValues, currentVariable)
-                    - formula.getNumberOfUnSatClausesAfterChange(variablesValues, currentVariable);
-
-            if(currentDiff > highestDiff){
-                winList.clear();
-                winList.add(entry.getKey());
-                highestDiff = currentDiff;
-            }else if(currentDiff == highestDiff){
-                winList.add(entry.getKey());
-                highestDiff = currentDiff;
+            if(score == 0){
+                literalsWithScoreZero.add(literal);
+            }else if(score > 0){
+                literalsWithHigherScore.add(literal);
             }
+
         }
 
-        return winList.get(random.nextInt(winList.size()));
+        if(literalsWithScoreZero.size() > 0){
+            return literalsWithScoreZero.get(random.nextInt(literalsWithScoreZero.size()));
+        }
+
+        if(random.nextDouble() <= p){
+            return literalsWithHigherScore.get(random.nextInt(literalsWithHigherScore.size()));
+        }
+
+        return literalsWithHigherScore.get(literalIdx);
     }
+
     private Map<String, VariableData> generateRandomSolution(Map<String, VariableData> variablesData){
         variablesData.forEach((k, v) -> v.setValue(random.nextBoolean()));
         return variablesData;
@@ -104,21 +100,6 @@ public class Gsat {
         }
 
         return variablesValues;
-    }
-
-    private Strategy randStrategy(double probabilityOfRandomStep){
-        int prob = (int) (probabilityOfRandomStep * 100);
-        Strategy[] strategies = new Strategy[100];
-
-        for (int i = 0; i < strategies.length; i++) {
-            if(i < prob){
-                strategies[i] = Strategy.RANDOM_STEP;
-            }else {
-                strategies[i] = Strategy.STANDARD;
-            }
-        }
-
-        return strategies[random.nextInt(strategies.length)];
     }
 
     private List<Integer> getUnSatClauses(Map<String, VariableData> variablesData, int numberOfClauses){

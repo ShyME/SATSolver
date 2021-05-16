@@ -9,10 +9,10 @@ import java.util.stream.Collectors;
 
 public class PoteznyMain {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
 
-        int variables = 3000;
-        int clauseNumber = 8100;
+        int variables = 80;
+        int clauseNumber = 1230;
 
 
         long dt =  System.currentTimeMillis();

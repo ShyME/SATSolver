@@ -13,7 +13,19 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class Main {
-    public static void main(List<Clause> clauses, int variableNumber, int clauseNumber) {
+
+    public static void main(String[] args) {
+        CNFReader cnfReader = new DimacsStdInReader();
+        SatSolver satSolver = new DPLLSatSolver();
+        ConjunctiveNormalFormula cnf = cnfReader.parseCNF();
+        ConjunctiveNormalFormula cnfCopy = cnf.copy();
+        System.out.println(satSolver.solve(cnf));
+        System.out.println(satSolver.getTrueLiterals());
+        System.out.println(cnf);
+        System.out.println(checkSAT(cnfCopy, satSolver.getTrueLiterals()));
+    }
+
+    public static void main(List<Clause> clauses, int variableNumber, int clauseNumber) throws InterruptedException {
         CNFReader cnfReader = new DimacsStdInReader();
 
 
@@ -34,6 +46,8 @@ public class Main {
         for (int i = 0; i < 20; i++) {
             long dt =  System.currentTimeMillis();
             System.out.println(satSolver.solve(cnf));
+//            Thread.sleep(2000);
+            System.out.println(satSolver.getTrueLiterals());
             long et = System.currentTimeMillis();
             System.out.println(et - dt);
 

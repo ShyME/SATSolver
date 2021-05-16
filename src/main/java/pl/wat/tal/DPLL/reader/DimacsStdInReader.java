@@ -2,6 +2,7 @@ package pl.wat.tal.DPLL.reader;
 
 import pl.wat.tal.DPLL.formula.Clause;
 import pl.wat.tal.DPLL.formula.ConjunctiveNormalFormula;
+import pl.wat.tal.GSAT.input.DataGeneratorImpl;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -43,6 +44,7 @@ public class DimacsStdInReader implements CNFReader {
     private ConjunctiveNormalFormula buildCNF() {
         int[] vars = parseProblemDefinition();
         List<Clause> clauses = parseClauses();
+
         int variableNumber = vars[0];
         int clauseNumber = vars[1];
         return new ConjunctiveNormalFormula(variableNumber, clauseNumber, clauses);

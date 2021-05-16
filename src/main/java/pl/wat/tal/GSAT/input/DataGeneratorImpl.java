@@ -19,10 +19,12 @@ public class DataGeneratorImpl implements DataGenerator {
 
     private static List<String> generateLiterals(int numberOfVariables) {
         Random random = new Random();
+//        int numberOfLiterals = random.nextInt(4) + 1;
         int numberOfLiterals = random.nextInt(numberOfVariables) + 1;
         List<String> literals = new ArrayList<>();
         for (int i = 0; i < numberOfVariables; i++) {
-            literals.add((random.nextBoolean()? "" : "-") + i);
+
+            literals.add((random.nextInt(10)>8? "" : "-") + i);
         }
 
 //        List<String> literals = IntStream.rangeClosed(1, numberOfVariables).mapToObj(

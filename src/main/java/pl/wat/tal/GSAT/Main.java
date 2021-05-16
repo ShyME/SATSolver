@@ -7,6 +7,7 @@ import pl.wat.tal.GSAT.formula.ConjunctiveNormalFormula;
 import pl.wat.tal.GSAT.formula.VariableData;
 import pl.wat.tal.GSAT.input.DataGeneratorImpl;
 import pl.wat.tal.GSAT.input.DimacsStdInReader;
+import pl.wat.tal.MemoryCounter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,7 +33,7 @@ public class Main {
         long beforeUsedMem=Runtime.getRuntime().totalMemory()-Runtime.getRuntime().freeMemory();
         Gsat gsat = new Gsat();
         long dt =  System.currentTimeMillis();
-        Map<String, VariableData> result = gsat.findSolution(formula, 200, 300, 0.9);
+        Map<String, VariableData> result = gsat.findSolution(formula, 400, 12000, 0.0);
 
         System.out.println("variables: " + result.size());
 
@@ -51,7 +52,7 @@ public class Main {
         List<Long> times = new ArrayList<>();
         for (int i = 0; i < 20; i++) {
             long dt =  System.currentTimeMillis();
-            gsat.findSolution(formula, 200, 1500, 0.8);
+            gsat.findSolution(formula, 200, 2000, 0.5);
             long et = System.currentTimeMillis();
             System.out.println("gsat done " + (et - dt));
 
@@ -65,5 +66,12 @@ public class Main {
 
         System.out.println("Średnia");
         System.out.println(avg / 20);
+
+        MemoryCounter mc = MemoryCounter.getInstance();
+        int bytes = mc.getIntCounter() * 8 + mc.getStringCounter() * 8 + mc.getBooleanCounter();
+
+        System.out.println("Zajeta pamiec: " + bytes + " bajtow");
+
+        mc.clear();
     }
 }
