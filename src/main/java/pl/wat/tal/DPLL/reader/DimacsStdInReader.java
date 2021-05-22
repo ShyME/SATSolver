@@ -43,6 +43,7 @@ public class DimacsStdInReader implements CNFReader {
     private ConjunctiveNormalFormula buildCNF() {
         int[] vars = parseProblemDefinition();
         List<Clause> clauses = parseClauses();
+
         int variableNumber = vars[0];
         int clauseNumber = vars[1];
         return new ConjunctiveNormalFormula(variableNumber, clauseNumber, clauses);

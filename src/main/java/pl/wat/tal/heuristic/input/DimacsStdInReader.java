@@ -1,8 +1,8 @@
-package pl.wat.tal.GSAT.input;
+package pl.wat.tal.heuristic.input;
 
 
-import pl.wat.tal.GSAT.formula.Clause;
-import pl.wat.tal.GSAT.formula.ConjunctiveNormalFormula;
+import pl.wat.tal.DPLL.formula.Clause;
+import pl.wat.tal.heuristic.formula.ConjunctiveNormalFormula;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -11,11 +11,11 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class DimacsStdInReader implements DataGenerator {
+public class DimacsStdInReader {
 
-    public ConjunctiveNormalFormula readFormulaFromFile(String fileName){
+    public ConjunctiveNormalFormula readFormulaFromFile(String fileName) {
 
-        try(Stream<String> line = Files.lines(Path.of(fileName))){
+        try (Stream<String> line = Files.lines(Path.of(fileName))) {
 
             List<Clause> clauses = line
                     .map(literals -> literals.trim().split(" +"))
@@ -34,11 +34,6 @@ public class DimacsStdInReader implements DataGenerator {
             e.printStackTrace();
         }
 
-        return null;
-    }
-
-    @Override
-    public List<Clause> generate(int numberOfVariables, int numberOfClauses) {
         return null;
     }
 }
