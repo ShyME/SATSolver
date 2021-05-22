@@ -14,6 +14,9 @@ public class ConjunctiveNormalFormula {
     public ConjunctiveNormalFormula(List<Clause> clauses, List<String> distinctLiterals) {
         this.clauses = clauses;
         this.distinctLiterals = distinctLiterals;
+
+        distinctLiterals.forEach(memoryCounter::incrementStringCounter);
+        clauses.forEach(clause -> clause.getLiterals().forEach(memoryCounter::incrementStringCounter));
     }
 
     public List<Clause> getClauses() {

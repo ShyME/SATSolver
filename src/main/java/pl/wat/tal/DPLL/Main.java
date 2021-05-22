@@ -43,7 +43,7 @@ public class Main {
 
 
         List<Long> times = new ArrayList<>();
-        for (int i = 0; i < 20; i++) {
+        for (int i = 0; i < 5; i++) {
             long dt =  System.currentTimeMillis();
             System.out.println(satSolver.solve(cnf));
 //            Thread.sleep(2000);
@@ -60,21 +60,24 @@ public class Main {
         }
 
         System.out.println("Średnia");
-        System.out.println(avg / 20);
+        System.out.println(avg / 5);
 
     }
 
     //TODO CHANGE IMPL
     private static boolean checkSAT(ConjunctiveNormalFormula cnf, List<String> trueLiterals) {
-        int satisfiedClauses = 0;
+        ConjunctiveNormalFormula cnfCopy = cnf.copy();
         for(Clause clause : cnf.getClauses()) {
             for(String literal : trueLiterals) {
                 if(clause.contains(literal)) {
-                    satisfiedClauses++;
+                    //System.out.println(clause);
+                    cnfCopy.removeContainingClauses(literal);
+                    //System.out.println("Literal: " + literal);
+                    //System.out.println(cnfCopy.getClauses().size());
                     break;
                 }
             }
         }
-        return cnf.getClauseNumber() == satisfiedClauses;
+        return cnfCopy.getClauses().size() == 0;
     }
 }

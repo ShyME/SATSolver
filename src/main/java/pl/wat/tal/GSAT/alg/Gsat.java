@@ -9,6 +9,7 @@ import java.util.*;
 
 public class Gsat {
 
+    private final MemoryCounter memoryCounter = MemoryCounter.getInstance();
 
     private final Random random = new Random();
     private String lastChangedVariable;

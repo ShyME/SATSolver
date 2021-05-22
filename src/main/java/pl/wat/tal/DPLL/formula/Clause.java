@@ -59,4 +59,6 @@ public class Clause {
 
         return !result;
     }
+
+
 }
