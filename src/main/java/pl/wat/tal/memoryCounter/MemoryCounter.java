@@ -1,4 +1,4 @@
-package pl.wat.tal;
+package pl.wat.tal.memoryCounter;
 
 import lombok.Getter;
 

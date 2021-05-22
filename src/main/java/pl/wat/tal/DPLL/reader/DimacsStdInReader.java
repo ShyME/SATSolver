@@ -2,7 +2,6 @@ package pl.wat.tal.DPLL.reader;
 
 import pl.wat.tal.DPLL.formula.Clause;
 import pl.wat.tal.DPLL.formula.ConjunctiveNormalFormula;
-import pl.wat.tal.GSAT.input.DataGeneratorImpl;
 
 import java.io.BufferedReader;
 import java.io.IOException;

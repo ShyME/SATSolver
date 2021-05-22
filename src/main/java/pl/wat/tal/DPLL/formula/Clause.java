@@ -2,7 +2,7 @@ package pl.wat.tal.DPLL.formula;
 
 import lombok.Getter;
 import lombok.ToString;
-import pl.wat.tal.GSAT.formula.VariableData;
+import pl.wat.tal.heuristic.formula.VariableData;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,7 +11,7 @@ import java.util.Map;
 @ToString
 @Getter
 public class Clause {
-    private List<String> literals;
+    private final List<String> literals;
 
     public Clause(List<String> literals) {
         this.literals = literals;
@@ -34,10 +34,7 @@ public class Clause {
     }
 
     public Clause getDeepCopy() {
-        List<String> newLiterals = new ArrayList<>();
-        for(String literal: literals) {
-            newLiterals.add(new String(literal));
-        }
+        List<String> newLiterals = new ArrayList<>(literals);
         return new Clause(newLiterals);
     }
 
@@ -59,6 +56,4 @@ public class Clause {
 
         return !result;
     }
-
-
 }

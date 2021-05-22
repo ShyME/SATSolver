@@ -1,12 +1,12 @@
-package pl.wat.tal.GSAT.formula;
+package pl.wat.tal.heuristic.formula;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class VariableData {
     private boolean value;
-    private List<Integer> varClauses;
-    private List<Integer> negatedVarClauses;
+    private final List<Integer> varClauses;
+    private final List<Integer> negatedVarClauses;
 
     public VariableData(boolean value) {
         this.value = value;
@@ -14,7 +14,7 @@ public class VariableData {
         this.negatedVarClauses = new ArrayList<>();
     }
 
-    public void setValue(boolean value){
+    public void setValue(boolean value) {
         this.value = value;
     }
 
@@ -44,8 +44,6 @@ public class VariableData {
 
     @Override
     public String toString() {
-        return "VariableData{" +
-                "value=" + value +
-                '}';
+        return "" + value;
     }
 }

@@ -1,10 +1,11 @@
-package pl.wat.tal.GSAT.formula;
+package pl.wat.tal.heuristic.formula;
 
 import pl.wat.tal.DPLL.formula.Clause;
-import pl.wat.tal.MemoryCounter;
+import pl.wat.tal.memoryCounter.MemoryCounter;
 
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class ConjunctiveNormalFormula {
     private final List<Clause> clauses;
@@ -17,6 +18,15 @@ public class ConjunctiveNormalFormula {
 
         distinctLiterals.forEach(memoryCounter::incrementStringCounter);
         clauses.forEach(clause -> clause.getLiterals().forEach(memoryCounter::incrementStringCounter));
+    }
+
+    public static ConjunctiveNormalFormula createCNFFromClauses(List<Clause> clauses) {
+        List<String> distinctLiterals = clauses.stream()
+                .flatMap(clause -> clause.getLiterals().stream())
+                .map(literal -> literal.replace("-", ""))
+                .distinct()
+                .collect(Collectors.toList());
+        return new ConjunctiveNormalFormula(clauses, distinctLiterals);
     }
 
     public List<Clause> getClauses() {
