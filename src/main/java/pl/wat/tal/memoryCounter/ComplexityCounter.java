@@ -2,22 +2,28 @@ package pl.wat.tal.memoryCounter;
 
 import lombok.Getter;
 
-public class MemoryCounter {
+public class ComplexityCounter {
+    // TODO DPLL operations and memory
+    // TODO GSAT operations and memory
+    // TODO WalkSAT memory
+    // TODO memory show in main function
 
-    private static MemoryCounter instance;
+    private static ComplexityCounter instance;
     @Getter
     private int intCounter = 0;
     @Getter
     private int stringCounter = 0;
     @Getter
     private int booleanCounter = 0;
+    @Getter
+    private int operationCounter = 0;
 
-    private MemoryCounter() {
+    private ComplexityCounter() {
     }
 
-    public static MemoryCounter getInstance() {
+    public static ComplexityCounter getInstance() {
         if(instance == null) {
-            instance = new MemoryCounter();
+            instance = new ComplexityCounter();
         }
         return instance;
     }
@@ -34,9 +40,14 @@ public class MemoryCounter {
         booleanCounter += howMuch;
     }
 
+    public void incrementOperationCounter(int howMuch) {
+        operationCounter += howMuch;
+    }
+
     public void clear() {
         intCounter = 0;
         stringCounter = 0;
         booleanCounter = 0;
+        operationCounter = 0;
     }
 }

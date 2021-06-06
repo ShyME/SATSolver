@@ -3,6 +3,7 @@ package pl.wat.tal.DPLL.formula;
 import lombok.Getter;
 import lombok.ToString;
 import pl.wat.tal.heuristic.formula.VariableData;
+import pl.wat.tal.memoryCounter.ComplexityCounter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,6 +12,9 @@ import java.util.Map;
 @ToString
 @Getter
 public class Clause {
+
+    private ComplexityCounter complexityCounter = ComplexityCounter.getInstance();
+
     private final List<String> literals;
 
     public Clause(List<String> literals) {
@@ -40,6 +44,7 @@ public class Clause {
 
     public boolean isClauseSatisfied(Map<String, VariableData> variableValues){
         for(String literal: literals){
+            complexityCounter.incrementOperationCounter(1);
             String variable = literal.replace("-", "");
             if((literal.contains("-") && !variableValues.get(variable).isPositive())
                     || (!literal.contains("-") && variableValues.get(variable).isPositive())){

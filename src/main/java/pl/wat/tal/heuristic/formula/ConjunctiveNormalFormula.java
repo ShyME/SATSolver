@@ -1,7 +1,7 @@
 package pl.wat.tal.heuristic.formula;
 
 import pl.wat.tal.DPLL.formula.Clause;
-import pl.wat.tal.memoryCounter.MemoryCounter;
+import pl.wat.tal.memoryCounter.ComplexityCounter;
 
 import java.util.List;
 import java.util.Map;
@@ -10,14 +10,14 @@ import java.util.stream.Collectors;
 public class ConjunctiveNormalFormula {
     private final List<Clause> clauses;
     private final List<String> distinctLiterals;
-    private final MemoryCounter memoryCounter = MemoryCounter.getInstance();
+    private final ComplexityCounter complexityCounter = ComplexityCounter.getInstance();
 
     public ConjunctiveNormalFormula(List<Clause> clauses, List<String> distinctLiterals) {
         this.clauses = clauses;
         this.distinctLiterals = distinctLiterals;
 
-        distinctLiterals.forEach(memoryCounter::incrementStringCounter);
-        clauses.forEach(clause -> clause.getLiterals().forEach(memoryCounter::incrementStringCounter));
+        distinctLiterals.forEach(complexityCounter::incrementStringCounter);
+        clauses.forEach(clause -> clause.getLiterals().forEach(complexityCounter::incrementStringCounter));
     }
 
     public static ConjunctiveNormalFormula createCNFFromClauses(List<Clause> clauses) {
@@ -51,7 +51,7 @@ public class ConjunctiveNormalFormula {
        Przeciwnie dla False.
      */
     public int getNumberOfSatClausesAfterChange(Map<String, VariableData> currentResult, String variableToChange) {
-        memoryCounter.incrementIntCounter(1);
+        complexityCounter.incrementIntCounter(1);
         int counter = 0;
         if (currentResult.get(variableToChange).isPositive()) {
             for (Integer idx : currentResult.get(variableToChange).getNegatedVarClauses()) {
@@ -76,16 +76,18 @@ public class ConjunctiveNormalFormula {
         Takie sytuacje trzeba zliczyć a wynik zwrócić
      */
     public int getNumberOfUnSatClausesAfterChange(Map<String, VariableData> currentResult, String variableToChange) {
-        memoryCounter.incrementIntCounter(1);
+        complexityCounter.incrementIntCounter(1);
         int counter = 0;
         if (currentResult.get(variableToChange).isPositive()) {
             for (Integer idx : currentResult.get(variableToChange).getVarClauses()) {
+                complexityCounter.incrementOperationCounter(1);
                 if (clauses.get(idx).willBeUnSatAfterChange(currentResult, variableToChange)) {
                     counter++;
                 }
             }
         } else {
             for (Integer idx : currentResult.get(variableToChange).getNegatedVarClauses()) {
+                complexityCounter.incrementOperationCounter(1);
                 if (clauses.get(idx).willBeUnSatAfterChange(currentResult, variableToChange)) {
                     counter++;
                 }

@@ -5,14 +5,14 @@ import pl.wat.tal.SatSolver;
 import pl.wat.tal.heuristic.formula.ConjunctiveNormalFormula;
 import pl.wat.tal.heuristic.formula.VariableData;
 import pl.wat.tal.heuristic.input.DimacsStdInReader;
-import pl.wat.tal.memoryCounter.MemoryCounter;
+import pl.wat.tal.memoryCounter.ComplexityCounter;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
 public class WalkSat implements SatSolver {
 
-    private final MemoryCounter memoryCounter = MemoryCounter.getInstance();
+    private final ComplexityCounter complexityCounter = ComplexityCounter.getInstance();
 
     protected final long MAX_TRIES;
     protected final long MAX_FLIPS;
@@ -60,6 +60,7 @@ public class WalkSat implements SatSolver {
                     return true;
                 }
                 String lastChangedVariable = findVariableToNegate(variablesValues, formula, WP).replace("-", "");
+                complexityCounter.incrementOperationCounter(1);
                 variablesValues.get(lastChangedVariable).negate();
             }
         }
@@ -84,6 +85,7 @@ public class WalkSat implements SatSolver {
             String literal = clause.getLiterals().get(i);
             score = formula.getNumberOfUnSatClausesAfterChange(variablesValues, literal.replace("-", ""));
 
+            complexityCounter.incrementIntCounter(1);
             if (score < minScore) {
                 minScore = score;
                 literalIdx = i;
@@ -109,7 +111,10 @@ public class WalkSat implements SatSolver {
     }
 
     protected void generateRandomSolution(Map<String, VariableData> variablesData) {
-        variablesData.forEach((k, v) -> v.setValue(random.nextBoolean()));
+        variablesData.forEach((k, v) -> {
+            v.setValue(random.nextBoolean());
+            complexityCounter.incrementOperationCounter(1);
+        });
     }
 
     protected Map<String, VariableData> updateVariablesData(List<Clause> clauses) {

@@ -10,18 +10,18 @@ import java.util.Random;
 
 public class DataGenerator {
 
-    public List<Clause> generate(int numberOfVariables, int numberOfClauses) {
+    public List<Clause> generate(int numberOfVariables, int numberOfClauses, long milisRequiredToSolve, double probabilityOfNegatedVariable) {
         List<Clause> clauses = new ArrayList<>();
         boolean formulaIsSolvable = false;
         while (!formulaIsSolvable) {
             clauses = new ArrayList<>();
             for (int i = 0; i < numberOfClauses; i++) {
-                clauses.add(new Clause(generateLiterals(numberOfVariables)));
+                clauses.add(new Clause(generateLiterals(numberOfVariables, probabilityOfNegatedVariable)));
             }
 
             long start = System.currentTimeMillis();
             formulaIsSolvable = checkWithDpll(clauses, numberOfVariables, numberOfClauses);
-            if (System.currentTimeMillis() - start < 1200) {
+            if (System.currentTimeMillis() - start < milisRequiredToSolve) {
                 formulaIsSolvable = false;
             }
         }
@@ -33,11 +33,11 @@ public class DataGenerator {
         return satSolver.solve(clauses);
     }
 
-    private static List<String> generateLiterals(int numberOfVariables) {
+    private static List<String> generateLiterals(int numberOfVariables, double probabilityOfNegatedVariable) {
         Random random = new Random();
         List<String> literals = new ArrayList<>();
         for (int i = 0; i < 3; i++) {
-            literals.add((random.nextBoolean() ? "" : "-")
+            literals.add((random.nextDouble() > probabilityOfNegatedVariable ? "" : "-")
                     + random.nextInt(numberOfVariables) + 1);
         }
         return literals;
